@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+        <meta data-n-head="ssr" charset="utf-8">
+        <title>Accueil | Hyderium</title>
+        <meta data-n-head="ssr" name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+<body>
+    <form id="createForumContent">
+        <input id="forumTitle" type="text" class="input" required placeholder="Titre du forums" />
+        <input id="forumDesc" type="text" class="input" required placeholder="Description du forum" />
+        <button id="chat-btn" type="submit"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
+    </form>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC7JfePtGV-szUmI5q9ZEu0BgaD5m6D__Y",
+            authDomain: "skyloria-13bcb.firebaseapp.com",
+            databaseURL: "https://skyloria-13bcb-default-rtdb.firebaseio.com",
+            projectId: "skyloria-13bcb",
+            storageBucket: "skyloria-13bcb.appspot.com",
+            messagingSenderId: "745250488561",
+            appId: "1:745250488561:web:1d07fc772c4e2d2368a950",
+            measurementId: "G-X8CPJNL28T"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        document.getElementById("createForumContent").addEventListener("submit", postChat);
+        function postChat(e) {
+            e.preventDefault();
+
+            const timestamp = new Date();
+            const heure = Date().format('LT');
+            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+            const forumTitle = document.getElementById("forumTitle");
+            const forumDesc = document.getElementById("forumDesc");
+            const titre = forumTitle.value;
+            const message = forumDesc.value;
+            
+            db.ref("messages/" + timestamp).set({
+                date: `${timestamp.toLocaleDateString(undefined, options)} à ${heure}`,
+                titre: titre,
+                msg: message,
+            });
+        }
+    </script>
+</body>
+
+</html>
